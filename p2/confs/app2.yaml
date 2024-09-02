@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app2-deployment
+  labels:
+    app: app2
+spec:
+  replicas: 3 # Deploys 3 replicas (instances) of the application.
+  selector:
+    matchLabels:
+      app: app2 # Ensures the deployment matches pods with the label 'app: app2'.
+  template:
+    metadata:
+      labels:
+        app: app2 # Label applied to the pod template.
+    spec:
+      containers:
+      - name: app2
+        image: paulbouwer/hello-kubernetes:1.10 # Container image used to deploy the application.
+        env:
+        - name: MESSAGE
+          value: "Hello from APP2." # Environment variable passed to the container. Reference: https://github.com/paulbouwer/hello-kubernetes/tree/main/src/app
+        ports:
+        - containerPort: 8080 # Port that the container inside the pod listens to for traffic.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app2-service
+spec:
+  type: ClusterIP # Exposes the service within the cluster using a cluster-internal IP.
+  selector:
+    app: app2 # The service targets pods with the label 'app: app2'.
+  ports:
+    - protocol: TCP
+      port: 8082 # Port exposed by the service.
+      targetPort: 8080 # Port on the pod that the service routes traffic to.

@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  # Name of the Ingress resource.
+  name: argocd-ingress
+  # Namespace where the Ingress is deployed.
+  namespace: argocd
+  # Annotations provide additional configuration for the Ingress.
+  annotations:
+    # Disables automatic SSL redirection.
+    traefik.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  # Rules define how incoming requests are routed to services.
+  rules:
+  - http:
+      paths:
+      - path: /argocd
+        # Specifies how the path should be matched.
+        pathType: Prefix
+        backend:
+          # Defines the backend service and port to route traffic to.
+          service:
+            # Name of the service to which traffic should be directed.
+            name: argocd-server
+            # Port number on the service to route traffic to.
+            port:
+              number: 80

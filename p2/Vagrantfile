@@ -1,0 +1,33 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  # Define the first machine: mkaddaniS (the master node).
+  config.vm.define "mkaddaniS" do |mkaddaniS|
+    # Set the hostname for the virtual machine.
+    mkaddaniS.vm.hostname = "mkaddaniS"
+    
+    # Use the Debian Bullseye 64-bit box.
+    mkaddaniS.vm.box = "debian/bullseye64"
+    
+    # Configure the network for the virtual machine.
+    # Set a private network with a static IP address. Auto-config is disabled.
+    mkaddaniS.vm.network :private_network, ip: "192.168.56.110", auto_config: false
+    
+    # Provision the machine using a shell script located at './scripts/server_setup.sh'.
+    mkaddaniS.vm.provision "shell", path: "./scripts/server_setup.sh"
+  end
+
+  # Configure the provider settings for VirtualBox.
+  config.vm.provider "virtualbox" do |vb|
+    # Disable the VirtualBox GUI.
+    vb.gui = false
+    
+    # Allocate 2 GB of memory to the virtual machine.
+    vb.memory = "2048"
+    
+    # Allocate 1 CPU to the virtual machine.
+    vb.cpus = 1
+  end
+end

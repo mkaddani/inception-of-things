@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: appx-gitlab  # Name of the ArgoCD application
+  namespace: argocd  # Namespace where the ArgoCD application will be created
+spec:
+  destination:
+    namespace: dev  # Kubernetes namespace where the application will be deployed
+    server: https://kubernetes.default.svc  # Kubernetes API server URL
+  source:
+    path: manifests_will42/  # Path to the manifests within the Git repository
+    repoURL: http://gitlab-webservice-default.gitlab.svc:8181/root/mkaddani-ops-demo.git  # Git repository URL
+    targetRevision: main  # Branch or tag in the Git repository
+  sources: []  # List of additional sources (currently empty)
+  project: default  # ArgoCD project to which this application belongs
+  syncPolicy:
+    automated:
+      prune: true  # Enable automatic pruning of resources that are no longer defined in the Git repository
+      selfHeal: true  # Enable automatic synchronization if the application state deviates from the desired state

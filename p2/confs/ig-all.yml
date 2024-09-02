@@ -1,0 +1,48 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: appx-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: / # Ensures that the URL path is rewritten to '/' when forwarded to the backend services.
+spec:
+  ingressClassName: nginx # Specifies the Ingress controller to be used, in this case, NGINX.
+  rules:
+  - host: app1.com # Rule for traffic directed to 'app1.com'.
+    http:
+      paths:
+      - path: /
+        pathType: Prefix # Matches the URL path based on the prefix.
+        backend:
+          service:
+            name: app1-service # Forwards requests to 'app1-service'.
+            port:
+              number: 8081 # Service port to which the requests will be forwarded.
+  - host: app2.com # Rule for traffic directed to 'app2.com'.
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app2-service # Forwards requests to 'app2-service'.
+            port:
+              number: 8082
+  - host: app3.com # Rule for traffic directed to 'app3.com'.
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app3-service # Forwards requests to 'app3-service'.
+            port:
+              number: 8083
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app3-service # Default backend if no host is matched, directs traffic to 'app3-service'.
+            port:
+              number: 8083

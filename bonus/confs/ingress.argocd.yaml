@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-ingress  # Name of the Ingress resource
+  namespace: argocd  # Namespace where the Ingress resource is created
+  annotations:
+    traefik.ingress.kubernetes.io/ssl-redirect: "false"  # Disable automatic SSL redirection by Traefik
+spec:
+  rules:
+  - host: www.argocd.local.com  # Hostname for the Ingress rule
+    http:
+      paths:
+      - path: /  # Path to match for this rule
+        pathType: Prefix  # Type of path matching
+        backend:
+          service:
+            name: argocd-server  # Name of the service to route traffic to
+            port:
+              number: 80  # Port on the service to route traffic to

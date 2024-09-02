@@ -1,0 +1,47 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  # Define the first machine: mkaddaniS (the master node).
+  config.vm.define "mkaddaniS" do |mkaddaniS|
+    # Set the hostname for the virtual machine.
+    mkaddaniS.vm.hostname = "mkaddaniS"
+    
+    # Use the Debian Bullseye 64-bit box.
+    mkaddaniS.vm.box = "debian/bullseye64"
+    
+    # Configure the network with a static IP and disable auto-config.
+    mkaddaniS.vm.network :private_network, ip: "192.168.56.110", auto_config: false
+    
+    # Provision the machine using a shell script located at './scripts/server_setup.sh'.
+    mkaddaniS.vm.provision "shell", path: "./scripts/server_setup.sh"
+  end
+
+  # Define the second machine: mkaddaniSW (the worker node or agent).
+  config.vm.define "mkaddaniSW" do |mkaddaniSW|
+    # Set the hostname for the virtual machine.
+    mkaddaniSW.vm.hostname = "mkaddaniSW"
+    
+    # Use the Debian Bullseye 64-bit box.
+    mkaddaniSW.vm.box = "debian/bullseye64"
+    
+    # Configure the network with a static IP and disable auto-config.
+    mkaddaniSW.vm.network :private_network, ip: "192.168.56.111", auto_config: false
+    
+    # Provision the machine using a shell script located at './scripts/serverworker_setup.sh'.
+    mkaddaniSW.vm.provision "shell", path: "./scripts/serverworker_setup.sh"
+  end
+
+  # Configure the provider settings for VirtualBox.
+  config.vm.provider "virtualbox" do |vb|
+    # Disable the VirtualBox GUI to run headless.
+    vb.gui = false
+    
+    # Allocate 1 GB of memory to each virtual machine.
+    vb.memory = "1024"
+    
+    # Allocate 1 CPU to each virtual machine.
+    vb.cpus = 1
+  end
+end

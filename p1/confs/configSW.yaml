@@ -1,0 +1,4 @@
+node-ip: "192.168.56.111"            # Specifies the IP address assigned to this K3s node.
+token-file: "/vagrant/server_token"  # Path to the file containing the token used to authenticate with the K3s server.
+server: "https://192.168.56.110:6443" # The URL of the K3s server to which this node will connect.
+node-name: "mkaddaniSW"              # Sets the hostname of the node in the K3s cluster.

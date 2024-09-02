@@ -1,0 +1,6 @@
+write-kubeconfig-mode: "0644"    # Sets the permissions for the kubeconfig file, allowing read/write access to the owner and read-only access to others.
+node-ip: "192.168.56.110"         # Specifies the IP address assigned to this K3s node.
+bind-address: "192.168.56.110"    # The IP address on which the K3s server listens for incoming API requests.
+advertise-address: "192.168.56.110" # The IP address that the K3s server uses to communicate with other nodes in the cluster.
+node-name: "mkaddaniS"            # Sets the hostname of the node in the K3s cluster.
+disable-traefik: true             # Disables the default Traefik Ingress controller that comes with K3s.

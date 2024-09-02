@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # Name of the ArgoCD application.
+  name: app1-app
+  # Namespace where ArgoCD is deployed.
+  namespace: argocd
+spec:
+  # Destination specifies where the application will be deployed.
+  destination:
+    # Kubernetes namespace where the application will be deployed.
+    namespace: dev
+    # Kubernetes API server URL.
+    server: https://kubernetes.default.svc
+  # Project within ArgoCD to which this application belongs.
+  project: default
+  # Source specifies where the application manifests are located.
+  source:
+    # URL of the Git repository containing the application manifests.
+    repoURL: https://github.com/mkaddani42/mkaddani-ops-demo.git
+    # Path within the Git repository where the manifests are located.
+    path: manifests_will42/
+    # Branch or tag to use from the repository.
+    targetRevision: main
+  # Sync policy for automatically syncing the application.
+  syncPolicy:
+    automated:
+      # Whether to automatically prune resources that are no longer defined in the repository.
+      prune: true
